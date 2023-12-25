@@ -1,6 +1,6 @@
 **Application Description:**
 
-The `simple-java-app` is a simple Java application encapsulated within a Maven project structure. It utilizes Java's HTTP server functionality to serve an image file over a local web server.
+The `simple-maven-java-app` is a simple Java application encapsulated within a Maven project structure. It utilizes Java's HTTP server functionality to serve an image file over a local web server.
 
 **Features:**
 
