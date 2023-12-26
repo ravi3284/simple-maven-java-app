@@ -12,9 +12,7 @@ How It Works:
 
 Upon execution, the application starts a simple HTTP server on port 8080.
 It loads an image file and serves it to any client accessing the server's root URL (http://localhost:8080).
-Usage:
 
-After building and running the Docker container (**docker run -p 8080:8080 java**), accessing http://localhost:8080 on a web browser will display the served image.
-Purpose:
+**Usage:** After building and running the Docker container (**docker run -p 8080:8080 java**), accessing http://localhost:8080 on a web browser will display the served image.
 
-This application serves as a basic example of setting up a Java-based web server to display an image file. It can serve as a starting point for learning about Java networking and basic Dockerization of Java applications.
+**Purpose:** This application serves as a basic example of setting up a Java-based web server to display an image file. It can serve as a starting point for learning about Java networking and basic Dockerization of Java applications.
