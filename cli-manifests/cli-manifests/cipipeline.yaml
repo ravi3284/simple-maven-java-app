@@ -1,0 +1,75 @@
+pipeline:
+  name: cicd-pipeline
+  identifier: cicdpipeline
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: githubconnector
+        build: <+input>
+  stages:
+    - stage:
+        name: ci-stage
+        identifier: cistage
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Owasp
+                  name: Run OWASP Scan
+                  identifier: Run_OWASP_Scan
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      workspace: .
+                      name: simple-maven-java-app
+                      variant: main
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: none 
+                      
+              - step:
+                  type: Run
+                  name: Maven Build
+                  identifier: maven_build
+                  spec:
+                    shell: Bash
+                    command: |
+                       mvn clean package
+
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry
+                  identifier: BuildAndPushDockerRegistry
+                  spec:
+                    connectorRef: docker_connector
+                    repo: <+pipeline.variables.imageRepo>
+                    tags:
+                      - <+pipeline.variables.imageTag>
+                    dockerfile: Dockerfile
+                    context: .
+  variables:
+    - name: imageRepo
+      type: String
+      description: ""
+      required: false
+      value: ravi3284/simple-maven-java-app
+    - name: imageTag
+      type: String
+      description: ""
+      required: false
+      value: latest
