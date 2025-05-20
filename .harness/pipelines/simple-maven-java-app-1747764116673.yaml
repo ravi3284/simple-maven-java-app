@@ -1,35 +1,75 @@
 pipeline:
-  identifier: Build_ravi3284_simple_maven_java_app_1747764146442
-  name: Build simple-maven-java-app
-  orgIdentifier: default
+  name: cicd-pipeline
+  identifier: cicdpipeline
   projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
   properties:
     ci:
       codebase:
+        connectorRef: githubconnector
         build: <+input>
-        connectorRef: account.Github
-        repoName: ravi3284/simple-maven-java-app
   stages:
     - stage:
-        identifier: build
-        name: build
+        name: ci-stage
+        identifier: cistage
+        description: ""
+        type: CI
         spec:
-          caching:
-            enabled: true
           cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
           execution:
             steps:
               - step:
-                  identifier: echo
-                  name: echo
+                  type: Owasp
+                  name: Run OWASP Scan
+                  identifier: Run_OWASP_Scan
                   spec:
-                    command: echo hello world
-                  timeout: ""
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      workspace: .
+                      name: simple-maven-java-app
+                      variant: main
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: none 
+                      
+              - step:
                   type: Run
-          platform:
-            arch: Amd64
-            os: Linux
-          runtime:
-            spec: {}
-            type: Cloud
-        type: CI
+                  name: Maven Build
+                  identifier: maven_build
+                  spec:
+                    shell: Bash
+                    command: |
+                       mvn clean package
+
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry
+                  identifier: BuildAndPushDockerRegistry
+                  spec:
+                    connectorRef: docker_connector
+                    repo: <+pipeline.variables.imageRepo>
+                    tags:
+                      - <+pipeline.variables.imageTag>
+                    dockerfile: Dockerfile
+                    context: .
+  variables:
+    - name: imageRepo
+      type: String
+      description: ""
+      required: false
+      value: ravi3284/simple-maven-java-app
+    - name: imageTag
+      type: String
+      description: ""
+      required: false
+      value: latest
