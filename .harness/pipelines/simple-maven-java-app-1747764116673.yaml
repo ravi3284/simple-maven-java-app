@@ -63,15 +63,15 @@ pipeline:
                     dockerfile: Dockerfile
                     context: .
 
-               - step:
-                   type: Run
-                   name: Trivy Image Scan
-                   identifier: trivy_image_scan
-                   spec:
-                     shell: Bash
-                     command: |
-                         curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-                         trivy image --exit-code 1 --severity HIGH,CRITICAL ravi3284/simple-maven-java-app:latest
+              - step:
+                  type: Run
+                  name: Trivy Image Scan
+                  identifier: trivy_image_scan
+                  spec:
+                    shell: Bash
+                    command: |
+                       curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+                       trivy image --exit-code 1 --severity HIGH,CRITICAL ravi3284/simple-maven-java-app:latest
      
   variables:
     - name: imageRepo
