@@ -67,10 +67,12 @@ pipeline:
                     templateRef: org.Trivy_Scan_Template
                     versionLabel: v1
                     templateInputs:
-                      spec:
-                        envirnomentVariables:
-                          - name: TRIVY_IMAGE
-                            value: ravi3284/simple-maven-java-app:latest
+                      identifier: trivy_image_scan
+                      type: Run
+                      envirnomentVariables:
+                        - name: TRIVY_IMAGE
+                          type: String
+                          value: <+input>
     - stage:
         name: deploy to dev
         identifier: build_ravi3284_simple_maven_java_app_1747764146442
