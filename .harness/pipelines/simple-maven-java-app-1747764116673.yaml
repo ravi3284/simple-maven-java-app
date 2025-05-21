@@ -93,6 +93,21 @@ pipeline:
                   spec:
                     skipDryRun: false
                     pruningEnabled: false
+              - step:
+                  type: ShellScript
+                  name: k8s Resource Validation
+                  identifier: k8s_Resource_Validation
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: kubectl get pods -n <+infra.namespace> | grep Running
+                    environmentVariables: []
+                    outputVariables: []
+                    includeInfraSelectors: false
+                  timeout: 10m
             rollbackSteps:
               - step:
                   name: Rollback Rollout Deployment
