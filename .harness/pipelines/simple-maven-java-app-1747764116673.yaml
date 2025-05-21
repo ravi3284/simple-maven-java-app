@@ -36,8 +36,19 @@ pipeline:
         identifier: build_ravi3284_simple_maven_java_app_1747764146442
         tags: {}
         template:
-          templateRef: org.deployjavatocluster
+          templateRef: rolloutdeployjavacluster
           versionLabel: 1.0.0
+          templateInputs:
+            spec:
+              service:
+                serviceRef: java_app
+              environment:
+                environmentRef: dev_k3d
+                infrastructureDefinitions:
+                  - identifier: k3d_infra
+                    inputs:
+                      spec:
+                        namespace: dev-ns
   variables:
     - name: TRIVY_IMAGE
       type: String
