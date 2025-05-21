@@ -66,6 +66,9 @@ pipeline:
                   template:
                     templateRef: org.Trivy_Scan_Template
                     versionLabel: v1
+                    templateInputs:
+                      spec:
+                        image: <+pipeline.variables.imageRepo>:<+pipeline.variables.imageTag>
     - stage:
         name: deploy to dev
         identifier: build_ravi3284_simple_maven_java_app_1747764146442
