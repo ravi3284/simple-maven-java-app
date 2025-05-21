@@ -93,17 +93,6 @@ pipeline:
                   spec:
                     skipDryRun: false
                     pruningEnabled: false
-              - step:
-                  type: Email
-                  name: Email_2
-                  identifier: Email_2
-                  spec:
-                    to: ravidevops3284@gmail.com
-                    cc: ""
-                    subject: pipeline is successful
-                    body: successful
-                    inputVariables: []
-                  timeout: 10m
             rollbackSteps:
               - step:
                   name: Rollback Rollout Deployment
