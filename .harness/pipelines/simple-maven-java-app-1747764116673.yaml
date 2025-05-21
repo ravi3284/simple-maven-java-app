@@ -40,8 +40,7 @@ pipeline:
                     advanced:
                       log:
                         level: info
-                      fail_on_severity: none 
-                      
+                      fail_on_severity: none
               - step:
                   type: Run
                   name: Maven Build
@@ -49,8 +48,7 @@ pipeline:
                   spec:
                     shell: Bash
                     command: |
-                       mvn clean package
-
+                      mvn clean package
               - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry
@@ -62,7 +60,6 @@ pipeline:
                       - <+pipeline.variables.imageTag>
                     dockerfile: Dockerfile
                     context: .
-
               - step:
                   type: Run
                   name: Trivy Image Scan
@@ -70,9 +67,47 @@ pipeline:
                   spec:
                     shell: Bash
                     command: |
-                       curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-                       trivy image --exit-code 1 --severity HIGH,CRITICAL ravi3284/simple-maven-java-app:latest
-     
+                      curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+                      trivy image --exit-code 1 --severity HIGH,CRITICAL ravi3284/simple-maven-java-app:latest
+    - stage:
+        name: deploy to dev
+        identifier: deploy_to_dev
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: java_app
+          environment:
+            environmentRef: dev_k3d
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: k3d_infra
+          execution:
+            steps:
+              - step:
+                  name: Rollout Deployment
+                  identifier: rolloutDeployment
+                  type: K8sRollingDeploy
+                  timeout: 10m
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+            rollbackSteps:
+              - step:
+                  name: Rollback Rollout Deployment
+                  identifier: rollbackRolloutDeployment
+                  type: K8sRollingRollback
+                  timeout: 10m
+                  spec:
+                    pruningEnabled: false
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
   variables:
     - name: imageRepo
       type: String
