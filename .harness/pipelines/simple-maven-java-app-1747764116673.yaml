@@ -71,7 +71,7 @@ pipeline:
                       trivy image --exit-code 1 --severity HIGH,CRITICAL ravi3284/simple-maven-java-app:latest
     - stage:
         name: deploy to dev
-        identifier: deploy_to_dev
+        identifier: build_ravi3284_simple_maven_java_app_1747764146442
         description: ""
         type: Deployment
         spec:
