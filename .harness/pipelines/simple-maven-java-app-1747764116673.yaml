@@ -133,11 +133,9 @@ pipeline:
               action:
                 type: StageRollback
   variables:
-    - name: imageRepo
+    - name: TRIVY_IMAGE
       type: String
-      description: ""
-      required: false
-      value: ravi3284/simple-maven-java-app
+      value: ravi3284/simple-maven-java-app:latest
     - name: imageTag
       type: String
       description: ""
