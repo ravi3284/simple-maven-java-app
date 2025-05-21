@@ -34,57 +34,10 @@ pipeline:
     - stage:
         name: deploy to dev
         identifier: build_ravi3284_simple_maven_java_app_1747764146442
-        description: ""
-        type: Deployment
-        spec:
-          deploymentType: Kubernetes
-          service:
-            serviceRef: java_app
-          environment:
-            environmentRef: dev_k3d
-            deployToAll: false
-            infrastructureDefinitions:
-              - identifier: k3d_infra
-          execution:
-            steps:
-              - step:
-                  name: Rollout Deployment
-                  identifier: rolloutDeployment
-                  type: K8sRollingDeploy
-                  timeout: 10m
-                  spec:
-                    skipDryRun: false
-                    pruningEnabled: false
-              - step:
-                  type: ShellScript
-                  name: k8s Resource Validation
-                  identifier: k8s_Resource_Validation
-                  spec:
-                    shell: Bash
-                    executionTarget: {}
-                    source:
-                      type: Inline
-                      spec:
-                        script: kubectl get pods -n <+infra.namespace> | grep Running
-                    environmentVariables: []
-                    outputVariables: []
-                    includeInfraSelectors: false
-                  timeout: 10m
-            rollbackSteps:
-              - step:
-                  name: Rollback Rollout Deployment
-                  identifier: rollbackRolloutDeployment
-                  type: K8sRollingRollback
-                  timeout: 10m
-                  spec:
-                    pruningEnabled: false
         tags: {}
-        failureStrategies:
-          - onFailure:
-              errors:
-                - AllErrors
-              action:
-                type: StageRollback
+        template:
+          templateRef: org.deployjavatocluster
+          versionLabel: 1.0.0
   variables:
     - name: TRIVY_IMAGE
       type: String
