@@ -45,11 +45,6 @@ pipeline:
             deployToAll: false
             infrastructureDefinitions:
               - identifier: k3d_infra
-                inputs:
-                  identifier: k3d_infra
-                  type: KubernetesDirect
-                  spec:
-                    namespace: <+input>
           execution:
             steps:
               - step:
