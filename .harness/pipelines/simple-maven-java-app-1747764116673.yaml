@@ -136,7 +136,7 @@ pipeline:
     - name: TRIVY_IMAGE
       type: String
       value: ravi3284/simple-maven-java-app:latest
-    - name: imagerepo
+    - name: imageRepo
       type: String
       description: ""
       required: false
