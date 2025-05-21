@@ -39,6 +39,7 @@ pipeline:
           templateRef: rolloutdeployjavacluster
           versionLabel: 1.0.0
           templateInputs:
+            type: Deployment
             spec:
               service:
                 serviceRef: java_app
@@ -46,9 +47,6 @@ pipeline:
                 environmentRef: dev_k3d
                 infrastructureDefinitions:
                   - identifier: k3d_infra
-                    inputs:
-                      spec:
-                        namespace: dev-ns
   variables:
     - name: TRIVY_IMAGE
       type: String
