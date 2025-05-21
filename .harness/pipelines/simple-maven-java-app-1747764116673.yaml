@@ -4,10 +4,15 @@ pipeline:
   projectIdentifier: default_project
   orgIdentifier: default
   tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: githubconnector
+        build: <+input>
   stages:
     - stage:
-        name: CI-Stage
-        identifier: CIStage
+        name: ci-stage
+        identifier: cistage
         template:
           templateRef: CItemplate
           versionLabel: 1.0.0
