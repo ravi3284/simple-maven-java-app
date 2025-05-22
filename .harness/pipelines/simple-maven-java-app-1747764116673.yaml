@@ -42,11 +42,11 @@ pipeline:
             type: Deployment
             spec:
               service:
-                serviceRef: java_app
+                serviceRef: <+pipeline.variables.serviceRef>
               environment:
-                environmentRef: dev_k3d
+                environmentRef: <+pipeline.variables.environmentRef>
                 infrastructureDefinitions:
-                  - identifier: k3d_infra
+                  - identifier: <+pipeline.variables.infraIdentifier>
   variables:
     - name: TRIVY_IMAGE
       type: String
@@ -61,3 +61,14 @@ pipeline:
       description: ""
       required: false
       value: latest
+    - name: serviceRef
+      type: String
+      value: java_app
+    - name: environmentRef
+      type: String
+      value: dev_k3d
+    - name: infraIdentifier
+      type: String
+      value: k3d_infra
+     
+      
