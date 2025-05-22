@@ -1,0 +1,5 @@
+service:
+  name: java-app-helm
+  identifier: javaapphelm
+  orgIdentifier: default
+  projectIdentifier: default_project
