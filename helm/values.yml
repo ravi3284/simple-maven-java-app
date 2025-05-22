@@ -1,0 +1,16 @@
+namespace: default
+app:
+  name: java-app
+
+replicaCount: 1
+
+image:
+  repository: ravi3284/simple-maven-java-app
+  tag: latest
+
+containerPort: 8080
+
+service:
+  name: java-service
+  type: LoadBalancer
+  port: 80
