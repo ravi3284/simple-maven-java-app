@@ -3,3 +3,27 @@ service:
   identifier: javaapphelm
   orgIdentifier: default
   projectIdentifier: default_project
+  serviceDefinition:
+    spec:
+      manifests:
+        - manifest:
+            identifier: javaapphelm
+            type: HelmChart
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: githubconnector
+                  gitFetchType: Branch
+                  folderPath: helm/chart.yml
+                  branch: main
+              subChartPath: ""
+              valuesPaths:
+                - helm/values.yml
+                - values-dev.yml
+                - values-qa.yml
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+              helmVersion: V3
+              fetchHelmChartMetadata: false
+    type: Kubernetes
